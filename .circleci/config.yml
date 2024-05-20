@@ -1,0 +1,55 @@
+version: 2.1
+
+orbs:
+  sonarcloud: sonarsource/sonarcloud@2.0.0
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12 
+    steps:
+      - checkout
+      # - run:
+      #     name: Install dependencies
+      #     command: npm install
+      # - run:
+      #     name: Run tests
+      #     command: npm test
+      # - persist_to_workspace:
+      #     root: ~/project
+      #     paths:
+      #       - .
+      - run:
+          name: Install SonarQube Scanner
+          command: |
+            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+            unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+            ls -ltra
+            mv sonar-scanner-5.0.1.3006-linux /home/circleci/sonar-scanner
+            echo 'export SONAR_SCANNER_HOME=/home/circleci/sonar-scanner' >> $BASH_ENV
+            echo 'export PATH=$PATH:$SONAR_SCANNER_HOME/bin' >> $BASH_ENV
+            source $BASH_ENV
+            rm sonar-scanner-cli-5.0.1.3006-linux.zip
+      - run:
+          name: SonarQube Analysis
+          command: sonar-scanner -Dsonar.organization=testajay -Dsonar.projectKey=ajay -Dsonar.sources=./bezkoder-app -Dsonar.host.url=https://sonarcloud.io
+
+  sonar-scan:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: SonarQube Scan
+          command: sonar-scanner -Dsonar.organization=testajay -Dsonar.projectKey=ajay -Dsonar.sources=./bezkoder-app -Dsonar.host.url=https://sonarcloud.io
+
+
+workflows:
+  version: 2
+  build_and_scan:
+    jobs:
+      - build
+      - sonar-scan:
+          requires:
+            - build
