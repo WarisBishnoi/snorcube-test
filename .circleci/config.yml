@@ -1,51 +1,11 @@
-# This config was automatically generated from your source code
-# Stacks detected: deps:node:bezkoder-app
 version: 2.1
 orbs:
-  node: circleci/node@5
+  sonarcloud: sonarsource/sonarcloud@2.0.0
 jobs:
   sonar-scan:
     working_directory: ~/project/bezkoder-app
     steps:
-      - checkout:
-        path: ~/project
+      - checkout
       - run:
-        name: SonarQube Scan
-        command: |
-            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-            unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-            ls -la 
-            # sonar-scanner \
-            #   -Dsonar.organization=testajay \
-            #   -Dsonar.projectKey=ajay \
-            #   -Dsonar.sources=. \
-            #   -Dsonar.host.url=https://sonarcloud.io
-#   test-node:
-#     # Install node dependencies and run tests
-#     executor: node/default
-#     working_directory: ~/project/bezkoder-app
-#     steps:
-#       - checkout:
-#           path: ~/project
-#       - node/install-packages:
-#           cache-path: ~/project/node_modules
-#           override-ci-command: npm install
-#       - run:
-#           name: Run tests
-#           command: echo \"No test specified in package.json\"
-#   deploy:
-#     # This is an example deploy job, not actually used by the workflow
-#     docker:
-#       - image: cimg/base:stable
-#     steps:
-#       # Replace this with steps to deploy to users
-#       - run:
-#           name: deploy
-#           command: '#e.g. ./deploy.sh'
-# workflows:
-#   build-and-test:
-#     jobs:
-#       - test-node
-#     # - deploy:
-#     #     requires:
-#     #       - test-node
+          name: SonarQube Scan
+          command: sonar-scanner
