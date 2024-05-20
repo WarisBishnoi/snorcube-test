@@ -32,7 +32,7 @@ jobs:
             rm sonar-scanner-cli-5.0.1.3006-linux.zip
       - run:
           name: SonarQube Analysis
-          command: sonar-scanner -Dsonar.organization=testajay -Dsonar.projectKey=ajay -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io
+          command: sonar-scanner -Dsonar.organization=testajay -Dsonar.projectKey=ajay -Dsonar.sources=./bezkoder-app -Dsonar.host.url=https://sonarcloud.io
 
   sonar-scan:
     docker:
@@ -42,7 +42,7 @@ jobs:
           at: ~/project
       - run:
           name: SonarQube Scan
-          command: sonar-scanner -Dsonar.organization=testajay -Dsonar.projectKey=ajay -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io
+          command: sonar-scanner -Dsonar.organization=testajay -Dsonar.projectKey=ajay -Dsonar.sources=./bezkoder-app -Dsonar.host.url=https://sonarcloud.io
 
 
 workflows:
