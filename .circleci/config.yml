@@ -1,11 +1,40 @@
 version: 2.1
+
 orbs:
   sonarcloud: sonarsource/sonarcloud@2.0.0
+
 jobs:
-  sonar-scan:
-    working_directory: ~/project/bezkoder-app
+  build:
+    docker:
+      - image: circleci/node:12
     steps:
       - checkout
       - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Run tests
+          command: npm test
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  sonar-scan:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
           name: SonarQube Scan
           command: sonar-scanner
+
+workflows:
+  version: 2
+  build_and_scan:
+    jobs:
+      - build
+      - sonar-scan:
+          requires:
+            - build
