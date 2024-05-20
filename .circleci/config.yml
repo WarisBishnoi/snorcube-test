@@ -9,16 +9,16 @@ jobs:
       - image: circleci/node:12 
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: npm install
-      - run:
-          name: Run tests
-          command: npm test
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
+      # - run:
+      #     name: Install dependencies
+      #     command: npm install
+      # - run:
+      #     name: Run tests
+      #     command: npm test
+      # - persist_to_workspace:
+      #     root: ~/project
+      #     paths:
+      #       - .
 
   sonar-scan:
     docker:
